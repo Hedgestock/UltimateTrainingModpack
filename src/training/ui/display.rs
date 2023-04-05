@@ -69,16 +69,27 @@ pub unsafe fn draw(root_pane: &mut Pane) {
 
     let mut cpu_gauge_display = String::from("");
     for i in 0..ui::frame_gauge::CPU_FRAME_GAUGE.frames_total {
-        cpu_gauge_display += if i > ui::frame_gauge::CPU_FRAME_GAUGE.frames { " " } else { "|" }
+        cpu_gauge_display += if i > ui::frame_gauge::CPU_FRAME_GAUGE.frames { " " } else { "|" };
     }
 
     let mut player_gauge_display = String::from("");
     for i in 0..ui::frame_gauge::PLAYER_FRAME_GAUGE.frames_total {
-        player_gauge_display += if i > ui::frame_gauge::PLAYER_FRAME_GAUGE.frames { " " } else { "|" }
+        player_gauge_display += if i > ui::frame_gauge::PLAYER_FRAME_GAUGE.frames { " " } else { "|" };
     }
 
     root_pane.find_pane_by_name_recursive("FrameGaugePlayer").unwrap().as_textbox().set_text_string(&player_gauge_display);
     root_pane.find_pane_by_name_recursive("FrameGaugeCPU").unwrap().as_textbox().set_text_string(&cpu_gauge_display);
 
-    
+    let mut cpu_frame_timeline = String::from("");
+    for i in ui::frame_gauge::CPU_FRAME_GAUGE.states {
+        cpu_frame_timeline += if i != 0 { "A" } else { "U" };
+    }
+
+    let mut player_frame_timeline = String::from("");
+    for i in ui::frame_gauge::PLAYER_FRAME_GAUGE.states {
+        player_frame_timeline += if i != 0 { "A" } else { "U" };
+    }
+
+    root_pane.find_pane_by_name_recursive("FrameTimelineCPU").unwrap().as_textbox().set_text_string(&cpu_frame_timeline);
+    root_pane.find_pane_by_name_recursive("FrameTimelinePlayer").unwrap().as_textbox().set_text_string(&player_frame_timeline);
 }

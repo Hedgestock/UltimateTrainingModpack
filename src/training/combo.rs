@@ -167,7 +167,12 @@ fn frame_gauge_shenanigans(player_module_accessor: *mut app::BattleObjectModuleA
     let _player_status = unsafe { StatusModule::status_kind(player_module_accessor) };
     let _test0 = *FIGHTER_STATUS_KIND_DAMAGE;
     let _test1 = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
-  
-    ui::frame_gauge::update_frame_gauge(player_hitstun_left, true);
-    ui::frame_gauge::update_frame_gauge(cpu_hitstun_left, false);
+
+    unsafe {
+        let test2: i32 = if PLAYER_ACTIONABLE {1} else {0};
+        let test3: i32 = if CPU_ACTIONABLE {1} else {0};
+        
+        ui::frame_gauge::update_frame_gauge(player_hitstun_left, test2, true);
+        ui::frame_gauge::update_frame_gauge(cpu_hitstun_left, test3, false);
+    }
 }
