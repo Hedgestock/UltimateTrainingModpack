@@ -12,6 +12,7 @@ mod damage;
 mod display;
 mod menu;
 pub mod notifications;
+pub mod frame_gauge;
 
 #[skyline::hook(offset = 0x4b620)]
 pub unsafe fn handle_draw(layout: *mut Layout, draw_info: u64, cmd_buffer: u64) {

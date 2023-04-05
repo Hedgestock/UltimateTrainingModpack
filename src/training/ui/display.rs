@@ -51,4 +51,34 @@ pub unsafe fn draw(root_pane: &mut Pane) {
     if has_completed {
         queue.remove(0);
     }
+
+    root_pane.find_pane_by_name_recursive("FrameGaugeBackground").unwrap().set_visible(true);//should hook to a menu thing
+
+    let player_frames_text = root_pane.find_pane_by_name_recursive("FrameGaugeCountPlayer").unwrap().as_textbox();
+    let player_frames = ui::frame_gauge::PLAYER_FRAME_GAUGE.frames;
+    player_frames_text.set_text_string(&format!("{player_frames}"));
+    let color = ui::frame_gauge::PLAYER_FRAME_GAUGE.color;
+    player_frames_text.set_color(color.r, color.g, color.b, color.a);
+
+
+    let cpu_frames_text = root_pane.find_pane_by_name_recursive("FrameGaugeCountCPU").unwrap().as_textbox();
+    let cpu_frames = ui::frame_gauge::CPU_FRAME_GAUGE.frames;
+    cpu_frames_text.set_text_string(&format!("{cpu_frames}"));
+    let color = ui::frame_gauge::CPU_FRAME_GAUGE.color;
+    cpu_frames_text.set_color(color.r, color.g, color.b, color.a);
+
+    let mut cpu_gauge_display = String::from("");
+    for i in 0..ui::frame_gauge::CPU_FRAME_GAUGE.frames_total {
+        cpu_gauge_display += if i > ui::frame_gauge::CPU_FRAME_GAUGE.frames { " " } else { "|" }
+    }
+
+    let mut player_gauge_display = String::from("");
+    for i in 0..ui::frame_gauge::PLAYER_FRAME_GAUGE.frames_total {
+        player_gauge_display += if i > ui::frame_gauge::PLAYER_FRAME_GAUGE.frames { " " } else { "|" }
+    }
+
+    root_pane.find_pane_by_name_recursive("FrameGaugePlayer").unwrap().as_textbox().set_text_string(&player_gauge_display);
+    root_pane.find_pane_by_name_recursive("FrameGaugeCPU").unwrap().as_textbox().set_text_string(&cpu_gauge_display);
+
+    
 }
