@@ -52,44 +52,38 @@ pub unsafe fn draw(root_pane: &mut Pane) {
         queue.remove(0);
     }
 
-    root_pane.find_pane_by_name_recursive("FrameGaugeBackground").unwrap().set_visible(true);//should hook to a menu thing
+    root_pane.find_pane_by_name_recursive("TrModHitstunDisp").unwrap().set_visible(true);//should hook to a menu thing
 
-    let player_frames_text = root_pane.find_pane_by_name_recursive("FrameGaugeCountPlayer").unwrap().as_textbox();
-    let player_frames = ui::frame_gauge::PLAYER_FRAME_GAUGE.frames;
-    player_frames_text.set_text_string(&format!("{player_frames}"));
+    let player_frames_text = root_pane.find_pane_by_name_recursive("PlayerHitstunFrames").unwrap().as_textbox();
+    let player_hitstun_frames = ui::frame_gauge::PLAYER_FRAME_GAUGE.frames;
+    player_frames_text.set_text_string(&format!("{player_hitstun_frames}"));
     let color = ui::frame_gauge::PLAYER_FRAME_GAUGE.color;
     player_frames_text.set_color(color.r, color.g, color.b, color.a);
 
 
-    let cpu_frames_text = root_pane.find_pane_by_name_recursive("FrameGaugeCountCPU").unwrap().as_textbox();
-    let cpu_frames = ui::frame_gauge::CPU_FRAME_GAUGE.frames;
-    cpu_frames_text.set_text_string(&format!("{cpu_frames}"));
+    let cpu_frames_text = root_pane.find_pane_by_name_recursive("CPUHitstunFrames").unwrap().as_textbox();
+    let cpu_hitstun_frames = ui::frame_gauge::CPU_FRAME_GAUGE.frames;
+    cpu_frames_text.set_text_string(&format!("{cpu_hitstun_frames}"));
     let color = ui::frame_gauge::CPU_FRAME_GAUGE.color;
     cpu_frames_text.set_color(color.r, color.g, color.b, color.a);
 
-    let mut cpu_gauge_display = String::from("");
-    for i in 0..ui::frame_gauge::CPU_FRAME_GAUGE.frames_total {
-        cpu_gauge_display += if i > ui::frame_gauge::CPU_FRAME_GAUGE.frames { " " } else { "|" };
-    }
+    let cpu_hitstun_gauge = (0..ui::frame_gauge::CPU_FRAME_GAUGE.frames_total)
+        .map(|frame| if frame > ui::frame_gauge::CPU_FRAME_GAUGE.frames { ' ' } else { '|' })
+        .collect::<String>();
 
-    let mut player_gauge_display = String::from("");
-    for i in 0..ui::frame_gauge::PLAYER_FRAME_GAUGE.frames_total {
-        player_gauge_display += if i > ui::frame_gauge::PLAYER_FRAME_GAUGE.frames { " " } else { "|" };
-    }
+    let player_hitstun_gauge = (0..ui::frame_gauge::PLAYER_FRAME_GAUGE.frames_total)
+        .map(|frame| if frame > ui::frame_gauge::PLAYER_FRAME_GAUGE.frames { ' ' } else { '|' })
+        .collect::<String>();
 
-    root_pane.find_pane_by_name_recursive("FrameGaugePlayer").unwrap().as_textbox().set_text_string(&player_gauge_display);
-    root_pane.find_pane_by_name_recursive("FrameGaugeCPU").unwrap().as_textbox().set_text_string(&cpu_gauge_display);
+    root_pane.find_pane_by_name_recursive("PlayerHitstunGauge").unwrap().as_textbox().set_text_string(&player_hitstun_gauge);
+    root_pane.find_pane_by_name_recursive("CPUHitstunGauge").unwrap().as_textbox().set_text_string(&cpu_hitstun_gauge);
 
-    let mut cpu_frame_timeline = String::from("");
-    for i in ui::frame_gauge::CPU_FRAME_GAUGE.states {
-        cpu_frame_timeline += if i != 0 { "A" } else { "U" };
-    }
+    let cpu_frame_timeline = ui::frame_gauge::CPU_FRAME_GAUGE.states.iter().map(|state| if *state != 0 { "A" } else { "U" })
+        .collect::<String>();
 
-    let mut player_frame_timeline = String::from("");
-    for i in ui::frame_gauge::PLAYER_FRAME_GAUGE.states {
-        player_frame_timeline += if i != 0 { "A" } else { "U" };
-    }
+    let player_frame_timeline = ui::frame_gauge::PLAYER_FRAME_GAUGE.states.iter().map(|state| if *state != 0 { "A" } else { "U" })
+        .collect::<String>();
 
-    root_pane.find_pane_by_name_recursive("FrameTimelineCPU").unwrap().as_textbox().set_text_string(&cpu_frame_timeline);
-    root_pane.find_pane_by_name_recursive("FrameTimelinePlayer").unwrap().as_textbox().set_text_string(&player_frame_timeline);
+    root_pane.find_pane_by_name_recursive("CPUFrameTimeline").unwrap().as_textbox().set_text_string(&cpu_frame_timeline);
+    root_pane.find_pane_by_name_recursive("PlayerFrameTimeline").unwrap().as_textbox().set_text_string(&player_frame_timeline);
 }

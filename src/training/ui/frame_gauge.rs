@@ -36,51 +36,20 @@ impl FrameGauge {
     // }
 }
 
-pub fn update_frame_gauge(frames: u32, state: i32, player: bool) { //mut gauge: &FrameGauge) {
-    // (*gauge).frames = frames;
-    // (*gauge).color = ResColor { r: frames as u8, g: 255, b: 255, a: 255 };
-    unsafe{
-        if player {
-            let mut color_offset: f32 = 0.0;
-            if frames > 0 {
-                if PLAYER_FRAME_GAUGE.frames_total == 0 {
-                    PLAYER_FRAME_GAUGE.frames_total = frames;
-                }
-                color_offset = (frames as f32 / PLAYER_FRAME_GAUGE.frames_total as f32) * 255.0;
-            } else if PLAYER_FRAME_GAUGE.frames_total > 0 {
-                PLAYER_FRAME_GAUGE.frames_total = 0;
-            }
-
-            PLAYER_FRAME_GAUGE.states.rotate_right(1);
-            PLAYER_FRAME_GAUGE.states[0] = state;
-
-            // clear_notifications("TESTING");
-            // let total = PLAYER_FRAME_GAUGE.frames_total;
-            // color_notification(
-            //     "TESTING".to_string(),
-            //     format!("{frames}/{total}= {color_offset}"),
-            //     60,
-            //     ResColor { r: color_offset as u8, g: 0, b: 0, a: 255 },
-            // );
-            
-            PLAYER_FRAME_GAUGE.frames = frames;
-            PLAYER_FRAME_GAUGE.color = ResColor { r: 255, g: 255 - color_offset as u8, b: 255 - color_offset as u8, a: 255 };
-        } else {
-            let mut color_offset: f32 = 0.0;
-            if frames > 0 {
-                if CPU_FRAME_GAUGE.frames_total == 0 {
-                    CPU_FRAME_GAUGE.frames_total = frames;
-                }
-                color_offset = (frames as f32 / CPU_FRAME_GAUGE.frames_total as f32) * 255.0;
-            } else if CPU_FRAME_GAUGE.frames_total > 0 {
-                CPU_FRAME_GAUGE.frames_total = 0;
-            }
-
-            CPU_FRAME_GAUGE.states.rotate_right(1);
-            CPU_FRAME_GAUGE.states[0] = state;
-
-            CPU_FRAME_GAUGE.frames = frames;
-            CPU_FRAME_GAUGE.color = ResColor { r: 255, g: 255 - color_offset as u8, b: 255 - color_offset as u8, a: 255 };
+pub fn update_frame_gauge(frames: u32, state: i32, gauge: &mut FrameGauge) {
+    let mut color_offset: f32 = 0.0;
+    if frames > 0 {
+        if gauge.frames_total == 0 {
+            gauge.frames_total = frames;
         }
+        color_offset = (frames as f32 / gauge.frames_total as f32) * 255.0;
+    } else if gauge.frames_total > 0 {
+        gauge.frames_total = 0;
     }
+
+    gauge.states.rotate_right(1);
+    gauge.states[0] = state;
+
+    gauge.frames = frames;
+    gauge.color = ResColor { r: 255, g: 255 - color_offset as u8, b: 255 - color_offset as u8, a: 255 };
 }
