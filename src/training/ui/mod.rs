@@ -41,6 +41,7 @@ pub unsafe fn handle_draw(layout: *mut Layout, draw_info: u64, cmd_buffer: u64) 
     if layout_name == "info_training" {
         display::draw(root_pane);
         menu::draw(root_pane);
+        frame_gauge::draw(root_pane);
     }
 
     original!()(layout, draw_info, cmd_buffer);

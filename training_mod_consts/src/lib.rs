@@ -30,10 +30,10 @@ pub struct TrainingModpackMenu {
     pub fast_fall: BoolFlag,
     pub follow_up: Action,
     pub frame_advantage: OnOff,
-    // pub frame_timeline: OnOff,
+    pub frame_timeline: OnOff,
     pub full_hop: BoolFlag,
     pub hitbox_vis: OnOff,
-    // pub hitstun_vis: OnOff,
+    pub hitstun_vis: OnOff,
     pub hud: OnOff,
     pub input_delay: Delay,
     pub ledge_delay: LongDelay,
@@ -108,10 +108,10 @@ pub static DEFAULTS_MENU: TrainingModpackMenu = TrainingModpackMenu {
     fast_fall: BoolFlag::FALSE,
     follow_up: Action::empty(),
     frame_advantage: OnOff::Off,
-    // frame_timeline: OnOff::Off,
+    frame_timeline: OnOff::Off,
     full_hop: BoolFlag::TRUE,
     hitbox_vis: OnOff::On,
-    // hitstun_vis: OnOff::On,
+    hitstun_vis: OnOff::On,
     hud: OnOff::On,
     input_delay: Delay::D0,
     ledge_delay: LongDelay::empty(),
@@ -574,13 +574,13 @@ pub unsafe fn ui_menu(menu: TrainingModpackMenu) -> UiMenu<'static> {
         true,
         &(menu.frame_advantage as u32),
     );
-    // misc_tab.add_submenu_with_toggles::<OnOff>(
-    //     "Frame timeline",
-    //     "frame_timeline",
-    //     "Frame Timeline: Display a timeline showing the state of both fighter for the last 60 frames",
-    //     true,
-    //     &(menu.frame_advantage as u32),
-    // );
+    misc_tab.add_submenu_with_toggles::<OnOff>(
+        "Frame timeline",
+        "frame_timeline",
+        "Frame Timeline: Display a timeline showing the state of both fighter for the last 60 frames",
+        true,
+        &(menu.frame_timeline as u32),
+    );
     misc_tab.add_submenu_with_toggles::<OnOff>(
         "Hitbox Visualization",
         "hitbox_vis",
@@ -588,13 +588,13 @@ pub unsafe fn ui_menu(menu: TrainingModpackMenu) -> UiMenu<'static> {
         true,
         &(menu.hitbox_vis as u32),
     );
-    // misc_tab.add_submenu_with_toggles::<OnOff>(
-    //     "Hitstun Visualization",
-    //     "hitstun_vis",
-    //     "Hitstun Visualization: Display the number of frames of hitstun left",
-    //     true,
-    //     &(menu.hitbox_vis as u32),
-    // );
+    misc_tab.add_submenu_with_toggles::<OnOff>(
+        "Hitstun Visualization",
+        "hitstun_vis",
+        "Hitstun Visualization: Display the number of frames of hitstun left",
+        true,
+        &(menu.hitstun_vis as u32),
+    );
     misc_tab.add_submenu_with_toggles::<Delay>(
         "Input Delay",
         "input_delay",

@@ -160,13 +160,13 @@ fn frame_gauge_shenanigans(player_module_accessor: *mut app::BattleObjectModuleA
     let cpu_hitstun_left = unsafe { WorkModule::get_float(cpu_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) } as u32;
     let player_hitstun_left = unsafe { WorkModule::get_float(player_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) } as u32;
 
-    let _cpu_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(cpu_module_accessor) } as u32;
-    let _player_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(player_module_accessor) } as u32; 
+    // let _cpu_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(cpu_module_accessor) } as u32;
+    // let _player_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(player_module_accessor) } as u32; 
 
-    let _cpu_status = unsafe { StatusModule::status_kind(cpu_module_accessor) };
-    let _player_status = unsafe { StatusModule::status_kind(player_module_accessor) };
-    let _test0 = *FIGHTER_STATUS_KIND_DAMAGE;
-    let _test1 = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
+    // let _cpu_status = unsafe { StatusModule::status_kind(cpu_module_accessor) };
+    // let _player_status = unsafe { StatusModule::status_kind(player_module_accessor) };
+    // let _test0 = *FIGHTER_STATUS_KIND_DAMAGE;
+    // let _test1 = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
 
     unsafe {
         let test2: i32 = if PLAYER_ACTIONABLE {1} else {0};
