@@ -53,7 +53,7 @@ pub unsafe fn draw(root_pane: &mut Pane) {
 }
 
 unsafe fn handle_hitstun_vis(root_pane: &mut Pane) {
-    let visible = MENU.frame_advantage == OnOff::On;
+    let visible = MENU.hitstun_vis == OnOff::On;
     root_pane.find_pane_by_name_recursive("TrModHitstunDisp").unwrap().set_visible(visible);
     if !visible { return; }
 
