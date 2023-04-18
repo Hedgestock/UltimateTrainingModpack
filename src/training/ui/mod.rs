@@ -12,7 +12,8 @@ mod damage;
 mod display;
 mod menu;
 pub mod notifications;
-pub mod frame_gauge;
+pub mod hitstun_gauge;
+pub mod frame_timeline;
 
 #[skyline::hook(offset = 0x4b620)]
 pub unsafe fn handle_draw(layout: *mut Layout, draw_info: u64, cmd_buffer: u64) {
@@ -41,7 +42,8 @@ pub unsafe fn handle_draw(layout: *mut Layout, draw_info: u64, cmd_buffer: u64) 
     if layout_name == "info_training" {
         display::draw(root_pane);
         menu::draw(root_pane);
-        frame_gauge::draw(root_pane);
+        hitstun_gauge::draw(root_pane);
+        frame_timeline::draw(root_pane);
     }
 
     original!()(layout, draw_info, cmd_buffer);

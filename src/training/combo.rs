@@ -134,6 +134,20 @@ pub unsafe fn get_command_flag_cat(module_accessor: &mut app::BattleObjectModule
     CPU_ACTIONABLE = is_actionable(cpu_module_accessor);
     PLAYER_ACTIONABLE = is_actionable(player_module_accessor);
 
+
+    // let test9 = CancelModule::is_enable_cancel(module_accessor);
+    // let test10 = actionable_statuses!().iter().any(|actionable_transition| {
+    //     WorkModule::is_enable_transition_term(module_accessor, **actionable_transition)
+    // });
+
+    // ui::notifications::clear_notifications("TESTING");
+    // ui::notifications::notification(
+    //     "TESTING".to_string(),
+    //     format!("{test9} {test10}"),
+    //     60
+    // );
+
+
     // if neither are active
     if !CPU_ACTIONABLE && !PLAYER_ACTIONABLE {
         if !FRAME_ADVANTAGE_CHECK {
@@ -145,7 +159,7 @@ pub unsafe fn get_command_flag_cat(module_accessor: &mut app::BattleObjectModule
 
     // if both are now active
     if PLAYER_ACTIONABLE && CPU_ACTIONABLE && FRAME_ADVANTAGE_CHECK {
-        if was_in_shieldstun(cpu_module_accessor) {//|| _was_in_hitstun(cpu_module_accessor) {
+        if was_in_shieldstun(cpu_module_accessor) || _was_in_hitstun(cpu_module_accessor) {
             update_frame_advantage((CPU_ACTIVE_FRAME as i64 - PLAYER_ACTIVE_FRAME as i64) as i32);
         }
 
@@ -157,22 +171,39 @@ pub unsafe fn get_command_flag_cat(module_accessor: &mut app::BattleObjectModule
 }
 
 fn frame_gauge_shenanigans(player_module_accessor: *mut app::BattleObjectModuleAccessor, cpu_module_accessor: *mut app::BattleObjectModuleAccessor) {
-    let cpu_hitstun_left = unsafe { WorkModule::get_float(cpu_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) } as u32;
-    let player_hitstun_left = unsafe { WorkModule::get_float(player_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) } as u32;
+    let cpu_hitstun_left = unsafe { WorkModule::get_float(cpu_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) };
+    let player_hitstun_left = unsafe { WorkModule::get_float(player_module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) };
 
     // let _cpu_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(cpu_module_accessor) } as u32;
     // let _player_hitlag_left = unsafe { StopModule::get_hit_stop_real_frame(player_module_accessor) } as u32; 
 
-    // let _cpu_status = unsafe { StatusModule::status_kind(cpu_module_accessor) };
-    // let _player_status = unsafe { StatusModule::status_kind(player_module_accessor) };
+    let cpu_status = unsafe { StatusModule::status_kind(cpu_module_accessor) };
+    let player_status = unsafe { StatusModule::status_kind(player_module_accessor) };
+
+    ui::frame_timeline::update_frame_timeline(player_status, cpu_status);
+
+
     // let _test0 = *FIGHTER_STATUS_KIND_DAMAGE;
     // let _test1 = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
-
-    unsafe {
-        let test2: i32 = if PLAYER_ACTIONABLE {1} else {0};
-        let test3: i32 = if CPU_ACTIONABLE {1} else {0};
+    // let test4 = *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR;
+    // let test5 = *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR;
+    // let test6 = *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON;
+    // let test7 = *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE;
+    
+    // let test84 =  WorkModule::get_float(player_module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_CORRECT_DAMAGE_VECTOR_ANGLE);
+    // let test85 =        WorkModule::get_float(player_module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_CORRECT_DAMAGE_VECTOR_EFFECT_ID);
+    // ui::notifications::clear_notifications("TESTING");
+    // ui::notifications::notification(
+        //     "TESTING".to_string(),
+        //     format!("{test84} {test85}"),
+        //     60
+        // );
         
-        ui::frame_gauge::update_frame_gauge(player_hitstun_left, test2, &mut ui::frame_gauge::PLAYER_FRAME_GAUGE);
-        ui::frame_gauge::update_frame_gauge(cpu_hitstun_left, test3, &mut ui::frame_gauge::CPU_FRAME_GAUGE);
+        // let test2: i32 = if PLAYER_ACTIONABLE {1} else {0};
+        // let test3: i32 = if CPU_ACTIONABLE {1} else {0};
+        
+    unsafe {
+        ui::hitstun_gauge::update_hitstun_gauge(player_hitstun_left, &mut ui::hitstun_gauge::PLAYER_HITSTUN_GAUGE);
+        ui::hitstun_gauge::update_hitstun_gauge(cpu_hitstun_left, &mut ui::hitstun_gauge::CPU_HITSTUN_GAUGE);
     }
 }
